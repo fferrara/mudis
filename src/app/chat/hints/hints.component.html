@@ -1,0 +1,6 @@
+<ul *ngFor="let hint of hints | slice:0:9;">
+  <li>
+    <img [src]="hint.artist.thumbUrl">
+    <span>{{hint.artist.name}}</span>
+  </li>
+</ul>
