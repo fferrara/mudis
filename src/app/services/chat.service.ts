@@ -8,7 +8,8 @@ import {Artist} from "../models/artist";
 interface Data {
   type: string,
   text: string,
-  choices?: Array<string>
+  choices?: Array<string>,
+  artists?: Array<any>
 }
 
 @Injectable()
@@ -26,26 +27,23 @@ export class ChatService {
     // see https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/share.md
     let published = this.dataStream.share();
 
-    this.messageStream = published
-      .map((data:Data): Message => {
+    let messages = published
+      .filter(data => data.type == 'MESSAGE')
+      .map((data: Data) => new Message(data.text));
+    let questions = published
+      .filter(data => data.type == 'QUESTION')
+      .map((data: Data) => new Question(data.text, data.choices));
+    let hintStream = published
+      .filter(data => data.type == 'ARTISTS')
+      .map((data: Data) => new ArtistHint(data.text, data.artists.map(Artist.build)));
 
-          switch (data.type) {
-
-            case 'MESSAGE': return new Message(data.text);
-            case 'QUESTION': return new Question(data.text, data.choices);
-          }
-        }
-      );
-
-    this.hintStream = published
-      .filter(data => data.type == 'ARTIST')
-      .map((data: Data) => new ArtistHint(data.text, Artist.build(data)));
+    this.messageStream = messages.merge(questions, hintStream);
   }
 
-  public send(message: string, isChoice: boolean) {
+  public send(message: Message) {
     this.dataStream.next({
-      type: isChoice && 'CHOICE' || 'MESSAGE',
-      text: message
+      type: message.getType(),
+      text: message.getMessage()
     });
   }
 

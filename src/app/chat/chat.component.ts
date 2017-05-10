@@ -1,10 +1,13 @@
 import {Component, OnInit, Inject, ViewChild, ElementRef} from "@angular/core";
 import {Observable} from "rxjs";
 import {ChatService} from "../services/chat.service";
-import {Message, Question} from "../models/message";
+import {Choice, Message, Question} from "../models/message";
+import {ArtistHint, Hint} from "../models/hint";
+import {Artist} from "app/models/artist";
 
 interface ChatMessage {
-  message: string,
+  content: Message,
+  type: string,
   isMine: boolean
 }
 
@@ -23,7 +26,7 @@ export class ChatComponent implements OnInit {
   question: Question;
   answer: string;
   choices: Array<string> = [];
-  showAnswer:boolean = false;
+  unAnswered:boolean = false;
   isWriting:boolean = false;
 
   placeholder: string = null;
@@ -34,40 +37,31 @@ export class ChatComponent implements OnInit {
     'Something about the projects I carried out?',
     'Something about my character?'
   ]
-  greeting = {
-    message: 'Hey there!'
-  };
 
   constructor(private chatService: ChatService) {
     this.chatMessages = [];
     this.window = window;
-    this.showAnswer = false;
+    this.unAnswered = false;
     this.chatService = chatService;
   }
 
   ngOnInit() {
-
-
-
     let delayed = this.chatService.messageStream
-      .map(m => {
+/*      .map(m => {
         return Observable.of(m).delay(2200);
-      }).concatAll();
+      }).concatAll();*/
 
     delayed
-      .startWith(this.greeting)
-      .filter(message => message instanceof Message)
       .subscribe((m: Message) => {
-
         this.isContainerFull() &&
-          window.scrollBy({ top: 90, left: 0, behavior: 'smooth' });
+          window.scrollBy({ top: 70, left: 0, behavior: 'smooth' });
 
         this.chatMessages.push({
-          message: m.message,
+          content: m,
+          type: m.getType(),
           isMine: false
         });
 
-      this.showAnswer = this.checkNeedAnswer();
       this.placeholder = this.getPlaceholder();
     });
 
@@ -76,10 +70,8 @@ export class ChatComponent implements OnInit {
       .subscribe((q: Question) => {
         this.question = q;
         this.choices = q.choices || [];
-        this.showAnswer = this.checkNeedAnswer();
+        this.unAnswered = true;
       });
-
-    //this.chatService.hintStream.subscribe(console.log)
   }
 
   private isContainerFull() {
@@ -96,28 +88,29 @@ export class ChatComponent implements OnInit {
     this.answer = null
   }
 
-  private submit(message, isChoice) {
-    this.showAnswer = false;
+  private submit(message : string, isChoice : boolean) {
+    this.unAnswered = false;
     this.chatMessages.push({
-      message: message,
+      content: new Message(message),
+      type: 'MESSAGE',
       isMine: true
     });
 
-    this.chatService.send(message, isChoice);
+    let outgoing = isChoice && new Choice(message) || new Message(message);
+
+    this.chatService.send(outgoing);
   }
 
   private checkNeedAnswer() {
     if (this.chatMessages.length == 0) return false;
     let last = this.chatMessages[this.chatMessages.length - 1];
-    let needAnswer = this.question && last.message == this.question.message || false;
+    let needAnswer = this.question && last.content.getMessage() == this.question.getMessage() || false;
     this.isWriting = !needAnswer;
 
     return needAnswer;
   }
 
   private getPlaceholder(){
-    if (this.showAnswer === false || this.choices.length != 0) return this.placeholder;
-
     return this.placeholder === null && this.firstPlaceholder || this.placeholders[Math.floor(Math.random() * this.placeholders.length)];
   }
 

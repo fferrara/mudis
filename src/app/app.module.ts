@@ -10,8 +10,10 @@ import {EmojiModule} from "angular-emojione";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {WritingComponent} from "./chat/writing/writing.component";
 import { PlaylistComponent } from './playlist/playlist.component';
-import { HintsComponent } from './chat/hints/hints.component';
+import { HintComponent } from './chat/hints/hint.component';
 import {ChatService} from "./services/chat.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { UserInputComponent } from './chat/user-input/user-input.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +21,12 @@ import {ChatService} from "./services/chat.service";
     ChatComponent,
     WritingComponent,
     PlaylistComponent,
-    HintsComponent,
+    HintComponent,
+    UserInputComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     EmojiModule,

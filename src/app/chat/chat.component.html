@@ -5,7 +5,8 @@
         <ul class="chat-body list-group">
           <li *ngFor="let message of chatMessages"
               class="animated fadeIn message-container" [ngClass]="{mine: message.isMine}">
-            <p class="message" [innerHTML]="message.message | emoji"></p>
+            <p *ngIf="message.type === 'MESSAGE'" class="message" [innerHTML]="message.content.getMessage() | emoji"></p>
+            <app-hint *ngIf="message.type === 'HINT'" [hint]="message.content"></app-hint>
           </li>
         </ul>
         <app-writing *ngIf="isWriting"></app-writing>
@@ -13,7 +14,7 @@
     </div>
   </div>
 
-  <div class="user-input" *ngIf="showAnswer">
+  <div class="user-input" *ngIf="unAnswered">
       <div class="row">
         <div class="col" *ngFor="let choice of choices">
           <a class="choice-button" href="javascript:void(0)" (click)="submitChoice(choice)" [innerHTML]="choice | emoji"></a>

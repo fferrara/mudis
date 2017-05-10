@@ -3,9 +3,6 @@
   padding-top: 25px;
   min-height: 100%;
   min-height: 100vh;
-  overflow-y: visible;
-  overflow-x: hidden;
-  height: auto;
 }
 
 .chat {
@@ -28,7 +25,7 @@ ul {
   clear: both;
 }
 
-.message-container p.message {
+.message-container .message {
   background-color: #FFF;
   padding: 8px 12px;
   display: inline-block;
@@ -37,7 +34,7 @@ ul {
   border-radius: 0 5px 0 5px;
 }
 
-.message-container.mine p.message {
+.message-container.mine .message {
    background-color: #25ABB0;
    float: right;
    color: white;
