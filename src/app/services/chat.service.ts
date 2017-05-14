@@ -9,35 +9,36 @@ interface Data {
   type: string,
   text: string,
   choices?: Array<string>,
-  artists?: Array<any>
+  artist?: Object
 }
 
 @Injectable()
 export class ChatService {
 
-
-  public messageStream: Observable<Message>;
-  public hintStream: Observable<Hint>;
+  public chatStream: Observable<Message>;
+  public artistStream: Observable<Artist>;
   public dataStream: Subject<Data>;
 
   constructor(ws: WebSocketService) {
     this.dataStream = ws.connect()
       .map((msg: MessageEvent) => JSON.parse(msg.data));
 
-    // see https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/share.md
-    let published = this.dataStream.share();
+    let published = this.dataStream;
 
     let messages = published
-      .filter(data => data.type == 'MESSAGE')
+      .filter(data => data.type == Message.serializedType)
       .map((data: Data) => new Message(data.text));
     let questions = published
-      .filter(data => data.type == 'QUESTION')
+      .filter(data => data.type == Question.serializedType)
       .map((data: Data) => new Question(data.text, data.choices));
-    let hintStream = published
-      .filter(data => data.type == 'ARTISTS')
-      .map((data: Data) => new ArtistHint(data.text, data.artists.map(Artist.build)));
+    let hints = published
+      .filter(data => data.type == Hint.serializedType)
+      .map((data: Data) => new ArtistHint(''));
 
-    this.messageStream = messages.merge(questions, hintStream);
+    this.chatStream = messages.merge(questions, hints);
+    this.artistStream = published
+      .filter(data => data.type == 'ARTIST')
+      .map((data: Data) => Artist.build(data));
   }
 
   public send(message: Message) {

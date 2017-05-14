@@ -26,13 +26,8 @@
 }
 
 .thumb {
-  display: inline-block;
   width: 100px;
   height: 100px;
-  margin: 5px;
-  border-radius: 50%;
-  background-position: center center;
-  background-size: cover;
 }
 
 .hint p {

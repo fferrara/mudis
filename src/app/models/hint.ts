@@ -5,19 +5,19 @@ import {Message} from "./message";
  */
 
 export abstract class Hint extends Message{
+  public static serializedType = 'HINT';
+
   public getType(): string {
-    return 'HINT';
+    return Hint.serializedType;
   }
 }
 
 export class ArtistHint extends Hint{
 
   constructor(
-    public message: string,
-    public artists: Array<Artist>
+    public message: string
   ) {
     super(message);
-    this.artists = artists;
   }
 }
 

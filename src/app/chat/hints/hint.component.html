@@ -1,10 +1,11 @@
 <div class="message hints" [@flyInOut]="'in'">
-  <div class="hint" *ngFor="let artist of hint.artists | slice:0:5; let i = index" (mouseover)='visible = i' (mouseleave)="visible = -1">
-    <img class="thumb" [src]="artist.thumbUrl">
+  <div class="hint" *ngFor="let hint of hints | slice:0:5; let i = index" (mouseover)='visible = i' (mouseleave)="visible = -1">
+    <img class="thumb" [src]="hint.thumbUrl">
     <p *ngIf="i === visible">
-      <button class="btn btn-dislike" (click)="sendLike(artist)"> <i class="fa fa-thumbs-down"></i></button>
-      {{artist.name}}
-      <button class="btn btn-like" (click)="sendLike(artist)"> <i class="fa fa-thumbs-up"></i></button>
+      <button class="btn btn-dislike" (click)="sendLike(hint)"> <i class="fa fa-thumbs-down"></i></button>
+      {{hint.name}}
+      <button class="btn btn-like" (click)="sendLike(hint)"> <i class="fa fa-thumbs-up"></i></button>
     </p>
   </div>
+  <button (click)="play()">Play</button>
 </div>

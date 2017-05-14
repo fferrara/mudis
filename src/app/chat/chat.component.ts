@@ -29,6 +29,12 @@ export class ChatComponent implements OnInit {
   unAnswered:boolean = false;
   isWriting:boolean = false;
 
+  types = {
+    message: Message.serializedType,
+    question: Question.serializedType,
+    hint: Hint.serializedType
+  };
+
   placeholder: string = null;
   firstPlaceholder: string = 'Start with something simple like: Where have you worked?'
   placeholders: Array<string> = [
@@ -46,7 +52,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    let delayed = this.chatService.messageStream
+    let delayed = this.chatService.chatStream
 /*      .map(m => {
         return Observable.of(m).delay(2200);
       }).concatAll();*/
@@ -65,7 +71,7 @@ export class ChatComponent implements OnInit {
       this.placeholder = this.getPlaceholder();
     });
 
-    this.chatService.messageStream
+    this.chatService.chatStream
       .filter(message => message instanceof Question)
       .subscribe((q: Question) => {
         this.question = q;
@@ -92,7 +98,7 @@ export class ChatComponent implements OnInit {
     this.unAnswered = false;
     this.chatMessages.push({
       content: new Message(message),
-      type: 'MESSAGE',
+      type: Message.serializedType,
       isMine: true
     });
 
@@ -113,6 +119,4 @@ export class ChatComponent implements OnInit {
   private getPlaceholder(){
     return this.placeholder === null && this.firstPlaceholder || this.placeholders[Math.floor(Math.random() * this.placeholders.length)];
   }
-
-
 }

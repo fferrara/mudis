@@ -5,8 +5,9 @@
         <ul class="chat-body list-group">
           <li *ngFor="let message of chatMessages"
               class="animated fadeIn message-container" [ngClass]="{mine: message.isMine}">
-            <p *ngIf="message.type === 'MESSAGE'" class="message" [innerHTML]="message.content.getMessage() | emoji"></p>
-            <app-hint *ngIf="message.type === 'HINT'" [hint]="message.content"></app-hint>
+            <p *ngIf="message.type === types.message || message.type === types.question"
+               class="message" [innerHTML]="message.content.getMessage()"></p>
+            <app-hint *ngIf="message.type === types.hint"></app-hint>
           </li>
         </ul>
         <app-writing *ngIf="isWriting"></app-writing>

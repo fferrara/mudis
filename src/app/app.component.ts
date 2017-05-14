@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Track} from "./models/track";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  public isPlaylistOpen: boolean = false;
+
+  constructor() {
+  }
 }

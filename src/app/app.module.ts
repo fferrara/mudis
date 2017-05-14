@@ -14,6 +14,7 @@ import { HintComponent } from './chat/hints/hint.component';
 import {ChatService} from "./services/chat.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { UserInputComponent } from './chat/user-input/user-input.component';
+import {TrackService} from "./services/track.service";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { UserInputComponent } from './chat/user-input/user-input.component';
     EmojiModule,
     NgbModule.forRoot(),
   ],
-  providers: [WebSocketService, ChatService],
+  providers: [WebSocketService, ChatService, TrackService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

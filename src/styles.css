@@ -3,3 +3,11 @@
 button {
   cursor: pointer;
 }
+
+.thumb {
+  display: inline-block;
+  margin: 5px;
+  border-radius: 50%;
+  background-position: center center;
+  background-size: cover;
+}

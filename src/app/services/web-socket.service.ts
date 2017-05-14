@@ -21,7 +21,7 @@ export class WebSocketService {
 
         return ws.close.bind(ws);
       }
-    );
+    ).share(); // see https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/share.md
     let observer = {
       next: (msg: Object) => {
         if (ws.readyState == WebSocket.OPEN)

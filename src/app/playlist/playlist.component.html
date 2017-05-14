@@ -1,3 +1,11 @@
-<p>
-  playlist works!
-</p>
+<div class="playlist" [ngClass]="{open: isOpen}">
+  <div class="track" *ngFor="let track of tracks; let i = index">
+    <img class="thumb" [src]="track.album.thumbUrl">
+    <span>
+      {{track.name}}
+    </span>
+    <audio controls>
+      <source [src]="track.url">
+    </audio>
+  </div>
+</div>

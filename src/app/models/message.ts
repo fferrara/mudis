@@ -5,6 +5,7 @@ import {Artist} from "./artist";
 
 
 export class Message {
+  public static serializedType = 'MESSAGE';
 
   constructor(
     public message: string
@@ -13,7 +14,8 @@ export class Message {
   }
 
   public getType(): string {
-    return 'MESSAGE';
+    let myClass = this.constructor as typeof Message;
+    return myClass.serializedType;
   }
 
   public getMessage(): string {
@@ -40,6 +42,7 @@ export class LikeArtist extends Message {
 }
 
 export class Question extends Message{
+  public static serializedType = 'QUESTION';
 
   constructor(
     public message: string,

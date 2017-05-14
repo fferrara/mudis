@@ -1,0 +1,19 @@
+.playlist {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  background-color: antiquewhite;
+  overflow: hidden;
+}
+
+.playlist.open {
+  height: 600px;
+  width: 30%;
+}
+
+.thumb {
+  width: 50px;
+  height: 50px;
+}

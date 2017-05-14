@@ -4,6 +4,8 @@ import {ArtistHint, Hint} from "../../models/hint";
 import {LikeArtist} from "../../models/message";
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Artist} from "../../models/artist";
+import {Track} from "../../models/track";
+import {TrackService} from "../../services/track.service";
 
 @Component({
   selector: 'app-hint',
@@ -29,16 +31,18 @@ import {Artist} from "../../models/artist";
   ]
 })
 export class HintComponent implements OnInit {
-  @Input() hint: ArtistHint;
+  hints: Array<Artist> = [];
   @Output() onLike = new EventEmitter<Artist>();
+  @Output() onPlay = new EventEmitter<Track>();
 
   visible: number;
 
-  constructor(private chatService: ChatService) {
-      this.chatService = chatService;
-  }
+  constructor(private chatService: ChatService, private trackService: TrackService) { }
 
   ngOnInit() {
+    this.chatService.artistStream.subscribe((a: Artist) => {
+      this.hints.push(a);
+    })
 
   }
 
@@ -46,9 +50,17 @@ export class HintComponent implements OnInit {
     let outgoing = new LikeArtist(artist);
     this.chatService.send(outgoing);
 
-    this.hint.artists = this.hint.artists.filter((a:Artist) => a !== artist);
+    this.hints = this.hints.filter((a:Artist) => a !== artist);
 
     this.onLike.emit(artist);
+  }
+
+  public play() {
+    let ids = this.hints.map((a: Artist) => a.id);
+    this.trackService.play(ids)
+      .then((tracks:Track[]) => {
+        tracks.forEach(this.onPlay.emit)
+      })
   }
 
 }
