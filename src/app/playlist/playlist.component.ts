@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TrackService} from "../services/track.service";
+import {TrackService} from "../shared/services/track.service";
 import {Track} from "../models/track";
 
 @Component({

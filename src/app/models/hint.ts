@@ -1,19 +1,16 @@
 import {Artist} from "./artist";
 import {Message} from "./message";
+import {Track} from "./track";
 /**
  * Created by Flavio on 06/05/2017.
  */
 
 export abstract class Hint extends Message{
   public static serializedType = 'HINT';
-
-  public getType(): string {
-    return Hint.serializedType;
-  }
 }
 
 export class ArtistHint extends Hint{
-
+  public static serializedType = 'ARTISTS_HINT';
   constructor(
     public message: string
   ) {
@@ -21,13 +18,11 @@ export class ArtistHint extends Hint{
   }
 }
 
-export class TrackHint extends Hint{
-
+export class TracksHint extends Hint{
+  public static serializedType = 'TRACKS_HINT';
   constructor(
-    public message: string,
-    public track: string
+    public message: string
   ) {
     super(message);
-    this.track = track;
   }
 }

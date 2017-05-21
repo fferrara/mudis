@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ChatService} from "../../services/chat.service";
-import {ArtistHint, Hint} from "../../models/hint";
-import {LikeArtist} from "../../models/message";
+import {ChatService} from "../shared/services/chat.service";
+import {ArtistHint, Hint} from "../models/hint";
+import {LikeArtist} from "../models/message";
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Artist} from "../../models/artist";
-import {Track} from "../../models/track";
-import {TrackService} from "../../services/track.service";
+import {Artist} from "../models/artist";
+import {Track} from "../models/track";
+import {TrackService} from "../shared/services/track.service";
 
 @Component({
   selector: 'app-hint',

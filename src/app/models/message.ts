@@ -46,9 +46,11 @@ export class Question extends Message{
 
   constructor(
     public message: string,
-    public choices: Array<string>
+    public choices: Array<string>,
+    public label?: string
   ) {
     super(message);
+    this.label = label;
     this.choices = choices;
   }
 }

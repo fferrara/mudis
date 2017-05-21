@@ -22,12 +22,14 @@ export class Track {
   }
 
   public static build(data):Track {
+    if (data.artists && data.artists.constructor === Array) data.artist = data.artists[0];
+
     return new Track(
       data.id,
       data.name,
       Artist.build(data.artist),
       Album.build(data.album),
-      data.url
+      data.url || data.preview_url
     )
   }
 }

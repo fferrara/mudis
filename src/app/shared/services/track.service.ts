@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {Track} from "../models/track";
+import {Track} from "../../models/track";
 import {WebSocketService} from "./web-socket.service";
 import {Http} from "@angular/http";
 import {Subject} from "rxjs/Subject";

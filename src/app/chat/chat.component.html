@@ -7,7 +7,8 @@
               class="animated fadeIn message-container" [ngClass]="{mine: message.isMine}">
             <p *ngIf="message.type === types.message || message.type === types.question"
                class="message" [innerHTML]="message.content.getMessage()"></p>
-            <app-hint *ngIf="message.type === types.hint"></app-hint>
+            <app-hint *ngIf="message.type === types.hint.artist"></app-hint>
+            <track-hint *ngIf="message.type === types.hint.track"></track-hint>
           </li>
         </ul>
         <app-writing *ngIf="isWriting"></app-writing>

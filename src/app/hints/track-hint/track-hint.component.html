@@ -1,0 +1,14 @@
+<div class="message hints" >
+  <div class="hint" *ngFor="let hint of hints | slice:0:5; let i = index" (mouseover)='visible = i' (mouseleave)="visible = -1">
+    <img class="thumb" [src]="hint.album.thumbUrl">
+    <p *ngIf="i === visible" class="top">
+      <button class="btn btn-dislike" (click)="sendLike(hint)"> <i class="fa fa-thumbs-down"></i></button>
+      {{hint.name}}
+      <button class="btn btn-like" (click)="sendLike(hint)"> <i class="fa fa-thumbs-up"></i></button>
+    </p>
+    <p *ngIf="i === visible" class="bottom">
+      {{hint.artist.name}}
+    </p>
+  </div>
+  <button (click)="play()">Play</button>
+</div>

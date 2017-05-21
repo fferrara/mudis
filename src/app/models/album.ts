@@ -18,6 +18,8 @@ export class Album {
   }
 
   public static build(data):Album {
+    if (data.artists && data.artists.constructor === Array) data.artist = data.artists[0];
+
     return new Album(
       data.id,
       data.name,

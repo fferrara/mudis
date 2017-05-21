@@ -1,9 +1,8 @@
-import {Component, OnInit, Inject, ViewChild, ElementRef} from "@angular/core";
-import {Observable} from "rxjs";
-import {ChatService} from "../services/chat.service";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {ChatService} from "../shared/services/chat.service";
 import {Choice, Message, Question} from "../models/message";
-import {ArtistHint, Hint} from "../models/hint";
-import {Artist} from "app/models/artist";
+import {ArtistHint, TracksHint} from "../models/hint";
+import {MusicService} from "../shared/services/music.service";
 
 interface ChatMessage {
   content: Message,
@@ -32,7 +31,10 @@ export class ChatComponent implements OnInit {
   types = {
     message: Message.serializedType,
     question: Question.serializedType,
-    hint: Hint.serializedType
+    hint: {
+      artist: ArtistHint.serializedType,
+      track: TracksHint.serializedType
+    }
   };
 
   placeholder: string = null;
@@ -44,7 +46,7 @@ export class ChatComponent implements OnInit {
     'Something about my character?'
   ]
 
-  constructor(private chatService: ChatService) {
+  constructor(private chatService: ChatService, private musicService: MusicService) {
     this.chatMessages = [];
     this.window = window;
     this.unAnswered = false;
@@ -85,6 +87,41 @@ export class ChatComponent implements OnInit {
   }
 
   public submitAnswer() {
+    this.unAnswered = false;
+
+    if (this.question.label === 'ChooseArtist'){
+      this.chatMessages.push({
+        content: new Message(this.answer),
+        type: Message.serializedType,
+        isMine: true
+      });
+      this.musicService.searchArtistName(this.answer)
+        .subscribe( (artist) => {
+          if (artist.constructor === Array) {
+            console.log(artist);
+          } else {
+            this.chatService.send(new Message(artist.id.toString()));
+          }
+        })
+      return;
+    }
+    if (this.question.label === 'TypeTrack'){
+      this.chatMessages.push({
+        content: new Message(this.answer),
+        type: Message.serializedType,
+        isMine: true
+      });
+      this.musicService.searchTrackName(this.answer)
+        .subscribe( (track) => {
+          if (track.constructor === Array) {
+            console.log(track);
+          } else {
+            this.chatService.send(new Message(track.id.toString()));
+          }
+        })
+      return;
+    }
+
     this.submit(this.answer, false)
     this.answer = null
   }

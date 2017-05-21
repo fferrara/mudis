@@ -5,16 +5,18 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import {ChatComponent} from "./chat/chat.component";
-import {WebSocketService} from "./services/web-socket.service";
+import {WebSocketService} from "./shared/services/web-socket.service";
 import {EmojiModule} from "angular-emojione";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {WritingComponent} from "./chat/writing/writing.component";
 import { PlaylistComponent } from './playlist/playlist.component';
-import { HintComponent } from './chat/hints/hint.component';
-import {ChatService} from "./services/chat.service";
+import { HintComponent } from './hints/hint.component';
+import {ChatService} from "./shared/services/chat.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { UserInputComponent } from './chat/user-input/user-input.component';
-import {TrackService} from "./services/track.service";
+import {TrackService} from "./shared/services/track.service";
+import {MusicService} from "./shared/services/music.service";
+import { TrackHintComponent } from './hints/track-hint/track-hint.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import {TrackService} from "./services/track.service";
     PlaylistComponent,
     HintComponent,
     UserInputComponent,
+    TrackHintComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ import {TrackService} from "./services/track.service";
     EmojiModule,
     NgbModule.forRoot(),
   ],
-  providers: [WebSocketService, ChatService, TrackService],
+  providers: [WebSocketService, ChatService, TrackService, MusicService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
